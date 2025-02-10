@@ -1,4 +1,7 @@
-use actix_web::{web, App, HttpResponse, HttpServer};
+use actix_web::{
+    web, App, HttpResponse, HttpServer,
+    middleware::Logger,
+};
 use serde_json::json;
 use std::env;
 
@@ -21,6 +24,8 @@ async fn private_route() -> HttpResponse {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
     // First server configuration
     let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
     let port = port.parse::<u16>().expect("PORT must be a valid number");
@@ -35,12 +40,14 @@ async fn main() -> std::io::Result<()> {
     // Launch both servers in parallel
     let server1 = HttpServer::new(|| {
         App::new()
+            .wrap(Logger::new("%a - - [%t] \"%r\" %s %b"))
             .route("/", web::get().to(hello))
     })
     .bind(("0.0.0.0", port))?;
 
     let server2 = HttpServer::new(|| {
         App::new()
+            .wrap(Logger::new("%a - - [%t] \"%r\" %s %b"))
             .route("/", web::get().to(root))
             .route("/public", web::get().to(public_route))
             .route("/private", web::get().to(private_route))
