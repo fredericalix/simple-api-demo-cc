@@ -1,0 +1,162 @@
+# Cursor Rules for simple-api-demo-cc
+
+## Language and Documentation Standards
+
+### English-Only Codebase
+- **ALL code must be written in English only**
+- **ALL comments must be in English**
+- **ALL variable names, function names, and identifiers must be in English**
+- **ALL error messages and log outputs must be in English**
+- **ALL documentation (README, .md files) must be in English**
+- **ALL commit messages must be in English**
+
+### Code Quality Standards
+- Follow Rust best practices and conventions
+- Use clear, descriptive names in English
+- Write comprehensive comments for complex logic
+- Follow standard Rust documentation patterns with doc comments (///)
+- Use proper error handling with English error messages
+- Follow REST API design principles
+
+### Documentation Standards
+- Use proper English grammar and spelling
+- Follow technical writing best practices
+- Include code examples with English comments
+- Use consistent terminology throughout the project
+
+### Commit Message Standards
+- Use conventional commit format in English
+- Examples: "feat: add webhook trigger support", "fix: resolve authentication issue"
+- Keep commit messages clear and descriptive
+
+## Development Workflow and Scripts
+
+### Development Guidelines
+- Always use the provided scripts for consistency
+- Test locally using cargo test before committing
+- Ensure cargo build runs successfully before pushing code
+- Use cargo clippy for linting and cargo fmt for formatting
+
+## Architecture Guidelines
+
+### Architectural Principles
+
+#### Single Responsibility Principle (SRP)
+- **Each function should do one thing and do it well**
+- **Each module should have a single, well-defined purpose**
+- **Each struct should represent one cohesive concept**
+- **Avoid "god objects" or "god functions" that handle multiple responsibilities**
+- **Split complex functions into smaller, focused functions**
+- **Separate concerns: business logic, data access, presentation, etc.**
+
+#### Additional Design Principles
+- **DRY (Don't Repeat Yourself)**: Extract common functionality into reusable functions/modules
+- **KISS (Keep It Simple, Stupid)**: Prefer simple, readable solutions over complex ones
+- **Separation of Concerns**: Keep different aspects of the application (API, business logic, data) in separate layers
+- **Dependency Inversion**: Depend on abstractions (traits) rather than concrete implementations
+
+## Rust Best Practices
+
+### Code Structure and Organization
+- Follow the standard Rust project layout with src/, tests/, examples/ directories
+- Use meaningful module names that reflect their purpose
+- Keep modules focused and cohesive
+- Organize code into logical modules using mod.rs files
+- Use lib.rs for library code and main.rs for binary entry points
+
+### Naming Conventions
+- Use snake_case for variables, functions, and modules
+- Use PascalCase (UpperCamelCase) for types, structs, enums, and traits
+- Use SCREAMING_SNAKE_CASE for constants and static variables
+- Use descriptive names that clearly indicate purpose
+- Avoid abbreviations unless they are widely understood
+
+### Error Handling
+- Use Result<T, E> for operations that can fail
+- Create custom error types using thiserror or anyhow crates
+- Use ? operator for error propagation
+- Always handle errors explicitly, never use unwrap() in production code
+- Use expect() with descriptive messages for cases where panic is acceptable
+- Implement proper error context with error wrapping
+
+### Memory Safety and Performance
+- Leverage Rust's ownership system effectively
+- Use references (&) instead of owned values when appropriate
+- Prefer borrowing to cloning when possible
+- Use Cow<str> for string data that might be borrowed or owned
+- Use Box<dyn Trait> for trait objects
+- Consider using Arc<T> and Mutex<T> for shared data in concurrent contexts
+
+### Concurrency
+- Use async/await for I/O-bound operations
+- Prefer tokio runtime for async applications
+- Use channels (tokio::sync::mpsc) for communication between async tasks
+- Use Arc<Mutex<T>> or Arc<RwLock<T>> for shared mutable state
+- Always use proper synchronization primitives
+
+### Testing
+- Write unit tests using #[cfg(test)] modules
+- Use descriptive test function names that explain what is being tested
+- Use assert_eq!, assert_ne!, and other assertion macros appropriately
+- Write integration tests in tests/ directory
+- Use mock objects and dependency injection for testable code
+- Maintain good test coverage with cargo tarpaulin
+
+## REST API Best Practices
+
+### API Design Principles
+- Follow RESTful conventions for HTTP methods and status codes
+- Use meaningful HTTP status codes (200, 201, 400, 401, 403, 404, 422, 500)
+- Design consistent URL patterns using nouns for resources
+- Use plural nouns for collections (/users, /products)
+- Use hierarchical URLs for related resources (/users/{id}/orders)
+- Version your APIs (e.g., /api/v1/)
+
+### Request/Response Handling
+- Use appropriate HTTP methods (GET, POST, PUT, PATCH, DELETE)
+- Implement proper request validation and sanitization
+- Return consistent JSON response formats
+- Include appropriate headers (Content-Type, Cache-Control, etc.)
+- Implement proper pagination for list endpoints
+- Use standardized error response formats
+
+### Security Best Practices
+- Implement proper authentication and authorization
+- Validate all input data and sanitize outputs
+- Use HTTPS in production
+- Implement rate limiting to prevent abuse
+- Use CORS headers appropriately
+- Never expose sensitive information in error messages
+- Implement proper logging without logging sensitive data
+
+### Performance and Scalability
+- Implement appropriate caching strategies
+- Use database connection pooling
+- Optimize database queries and use indexing
+- Implement proper logging and monitoring
+- Use async/await for I/O operations
+- Consider using middleware for cross-cutting concerns
+
+### Documentation
+- Document all API endpoints with clear descriptions
+- Provide example requests and responses
+- Document authentication requirements
+- Include error response examples
+- Use tools like OpenAPI/Swagger for API documentation
+- Keep documentation up-to-date with code changes
+
+## Security and Performance
+- Never expose sensitive information in logs or error messages
+- Use proper authentication and authorization
+- Implement rate limiting where appropriate
+- Optimize for performance and maintainability
+- Use Rust's built-in security features (no buffer overflows, memory safety)
+- Validate all user inputs and sanitize outputs
+
+## Testing
+- Write comprehensive unit tests
+- Use descriptive test names in English
+- Include integration tests for critical workflows
+- Test error conditions and edge cases
+- Maintain good test coverage
+- Use property-based testing where appropriate (proptest crate) 

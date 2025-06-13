@@ -1,0 +1,41 @@
+# Build artifacts
+target/
+*.pdb
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env*
+
+# CleverCloud configuration
+.clever.json
+
+# Docker files
+Dockerfile*
+.dockerignore
+
+# CI/CD
+.github/
+
+# Testing
+coverage/ 

@@ -1,61 +1,30 @@
-use actix_web::{
-    web, App, HttpResponse, HttpServer,
-    middleware::Logger,
-};
-use serde_json::json;
-use std::env;
+mod config;
+mod error;
+mod handlers;
+mod server;
 
-async fn hello() -> HttpResponse {
-    HttpResponse::Ok().body("Hello world!")
-}
+use config::Config;
+use error::AppError;
+use server::ServerManager;
 
-// Routes for the second server
-async fn root() -> HttpResponse {
-    HttpResponse::Ok().json(json!({ "status": "ok" }))
-}
-
-async fn public_route() -> HttpResponse {
-    HttpResponse::Ok().json(json!({ "message": "public route" }))
-}
-
-async fn private_route() -> HttpResponse {
-    HttpResponse::Ok().json(json!({ "message": "private and protected route" }))
-}
-
+/// Entry point for the simple API demo application.
+/// 
+/// This application starts two HTTP servers:
+/// - Main server: Simple hello world endpoint  
+/// - Application server: Multiple endpoints with JSON responses
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Initialize logging
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
-    // First server configuration
-    let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
-    let port = port.parse::<u16>().expect("PORT must be a valid number");
-
-    // Second server configuration
-    let port_app = env::var("PORT_APP").unwrap_or_else(|_| "4242".to_string());
-    let port_app = port_app.parse::<u16>().expect("PORT_APP must be a valid number");
-
-    println!("Main server started on port {}", port);
-    println!("Application server started on port {}", port_app);
-
-    // Launch both servers in parallel
-    let server1 = HttpServer::new(|| {
-        App::new()
-            .wrap(Logger::new("%a - - [%t] \"%r\" %s %b"))
-            .route("/", web::get().to(hello))
-    })
-    .bind(("0.0.0.0", port))?;
-
-    let server2 = HttpServer::new(|| {
-        App::new()
-            .wrap(Logger::new("%a - - [%t] \"%r\" %s %b"))
-            .route("/", web::get().to(root))
-            .route("/public", web::get().to(public_route))
-            .route("/private", web::get().to(private_route))
-    })
-    .bind(("0.0.0.0", port_app))?;
-
-    // Start both servers
-    futures::future::try_join(server1.run(), server2.run()).await?;
+    // Load configuration
+    let config = Config::from_env()
+        .map_err(|e| AppError::config(format!("Failed to load configuration: {}", e)))?;
+    
+    // Create and start server manager
+    let server_manager = ServerManager::new(config);
+    server_manager.start().await
+        .map_err(|e| AppError::server(format!("Failed to start servers: {}", e)))?;
 
     Ok(())
 }

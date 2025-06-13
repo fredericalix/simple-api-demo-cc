@@ -8,5 +8,3 @@ target/
 # Environment variables
 .env
 
-# Cargo.lock
-Cargo.lock

@@ -1,63 +1,223 @@
 # Simple API Demo
 
-A simple Rust-based API demonstration project designed to learn Rust deployment on CleverCloud PaaS and test Otoroshi reverse proxy features.
+A well-structured Rust-based REST API demonstration project featuring modern development practices and deployment options. Designed for learning Rust deployment on CleverCloud PaaS and testing Otoroshi reverse proxy features.
 
-## Project Overview
+## 🏗️ Architecture
 
-This project implements two HTTP servers:
-- Main server (PORT, default: 8080): Simple hello world endpoint
-- Application server (PORT_APP, default: 4242): Multiple endpoints with JSON responses
+This project follows Rust best practices with a clean, modular architecture:
 
-### Endpoints
+```
+src/
+├── main.rs         # Application entry point
+├── lib.rs          # Library exports for testing
+├── config.rs       # Configuration management
+├── error.rs        # Custom error types and handling
+├── handlers.rs     # HTTP request handlers
+└── server.rs       # Server setup and management
+```
 
-Main Server:
-- `GET /`: Returns "Hello world!"
+### Key Features
 
-Application Server:
-- `GET /`: Returns `{"status": "ok"}`
-- `GET /public`: Returns `{"message": "public route"}`
-- `GET /private`: Returns `{"message": "private and protected route"}`
+- **🦀 Modern Rust**: Built with Rust 2021 edition using Actix-web framework
+- **🔧 Proper Error Handling**: Custom error types with structured API responses
+- **🧪 Comprehensive Testing**: Unit tests, integration tests, and test coverage
+- **🌐 CORS Support**: Configured for cross-origin requests
+- **📝 Extensive Documentation**: Full API documentation with examples
+- **🐳 Docker Ready**: Multi-stage Docker builds with security best practices
+- **🔄 Health Checks**: Built-in health monitoring endpoints
+- **📊 Structured Logging**: Comprehensive request/response logging
 
-## Environment Variables
+## 🚀 Project Overview
 
-- `PORT`: Main server port (default: 8080)
-- `PORT_APP`: Application server port (default: 4242)
-- `RUST_LOG`: Log level (recommended: "info")
+This application runs two concurrent HTTP servers:
 
-## Running the Project
+### Main Server (PORT: 8080)
+- `GET /`: Returns "Hello world!" text response
+- `GET /health`: Health check endpoint
 
-1. Clone the repository
-2. Build the project:
+### Application Server (PORT: 4242)
+- `GET /`: Returns service status JSON with version info
+- `GET /health`: Health check endpoint
+- `GET /public`: Public route with JSON response and timestamp
+- `GET /private`: Protected route (placeholder for authentication)
+
+## 🛠️ Development
+
+### Prerequisites
+
+- Rust 1.86+ with Cargo
+- Docker (optional, for containerized deployment)
+
+### Local Development
+
+1. **Clone and build:**
 ```bash
+git clone <repository-url>
+cd simple-api-demo-cc
 cargo build
 ```
 
-3. Run the servers:
+2. **Run tests:**
 ```bash
-Cargo RUST_LOG=info run
+cargo test                    # Run all tests
+cargo test --test integration_tests  # Run integration tests only
 ```
 
-## Deployment on CleverCloud
+3. **Run the application:**
+```bash
+RUST_LOG=info cargo run
+```
 
-This project is designed to be deployed on CleverCloud PaaS platform. It serves as a learning example for:
-- Rust application deployment
-- Multi-port service configuration
-- Environment variable usage
-- Logging configuration
+4. **Code quality checks:**
+```bash
+cargo clippy                  # Linting
+cargo fmt                     # Code formatting
+cargo check                   # Quick compilation check
+```
 
-## Otoroshi Testing
+### Environment Variables
 
-The dual-server setup allows testing various Otoroshi reverse proxy features:
-- Route mapping
-- Service discovery
-- Load balancing
-- Access control
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Main server port | 8080 |
+| `PORT_APP` | Application server port | 4242 |
+| `BIND_ADDRESS` | Server bind address | 0.0.0.0 |
+| `RUST_LOG` | Log level | info |
+
+## 🐳 Docker Deployment
+
+### Quick Start
+
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
+
+# Run with reverse proxy
+docker-compose --profile with-proxy up --build
+```
+
+### Manual Docker Build
+
+```bash
+# Build image
+docker build -t simple-api-demo .
+
+# Run container
+docker run -p 8080:8080 -p 4242:4242 \
+  -e RUST_LOG=info \
+  simple-api-demo
+```
+
+### Production Deployment
+
+The Docker setup includes:
+- Multi-stage builds for minimal image size
+- Non-root user for security
+- Health checks for monitoring
+- Optional Nginx reverse proxy configuration
+
+## 🧪 Testing
+
+The project includes comprehensive test coverage:
+
+- **Unit Tests**: Test individual components in isolation
+- **Integration Tests**: Test complete HTTP endpoint behavior
+- **Error Handling Tests**: Verify proper error responses
+- **Configuration Tests**: Validate environment variable parsing
+
+```bash
+# Run all tests with coverage
+cargo test
+
+# Run tests with output
+cargo test -- --nocapture
+
+# Run specific test module
+cargo test config::tests
+```
+
+## 📁 Project Structure
+
+### Core Modules
+
+- **`config`**: Environment-based configuration management with validation
+- **`error`**: Custom error types implementing `ResponseError` for structured API responses
+- **`handlers`**: HTTP endpoint handlers organized by server type
+- **`server`**: Server creation, configuration, and lifecycle management
+
+### Best Practices Implemented
+
+- ✅ Single Responsibility Principle (SRP)
+- ✅ Proper error handling with custom types
+- ✅ Comprehensive documentation with examples
+- ✅ Test-driven development with high coverage
+- ✅ Security-first Docker configuration
+- ✅ Structured logging and monitoring
+- ✅ CORS configuration for API access
+
+## 🌐 API Examples
+
+### Main Server Endpoints
+
+```bash
+# Hello world endpoint
+curl http://localhost:8080/
+
+# Health check
+curl http://localhost:8080/health
+```
+
+### Application Server Endpoints
+
+```bash
+# Service status
+curl http://localhost:4242/
+# Response: {"status":"ok","service":"simple-api-demo","version":"0.1.0"}
+
+# Public route
+curl http://localhost:4242/public
+# Response: {"message":"public route","access":"public","timestamp":"2024-01-15T10:30:00Z"}
+
+# Private route
+curl http://localhost:4242/private
+# Response: {"message":"private and protected route","access":"private","timestamp":"2024-01-15T10:30:00Z","warning":"This route should require authentication in production"}
+```
+
+## 🚀 Deployment Options
+
+### CleverCloud PaaS
+This project is optimized for CleverCloud deployment with proper configuration management.
+
+### Otoroshi Reverse Proxy
+The dual-server setup enables testing of:
+- Route mapping and service discovery
+- Load balancing strategies
+- Access control mechanisms
 - API gateway features
 
-## License
+### Docker Swarm/Kubernetes
+The containerized setup supports orchestration platforms with proper health checks and configuration.
+
+## 🤝 Contributing
+
+1. Follow the established code organization patterns
+2. Write tests for new functionality
+3. Use descriptive commit messages following conventional commits
+4. Ensure `cargo clippy` and `cargo fmt` pass
+5. Update documentation for API changes
+
+## 📄 License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
-## Contributing
+## 🔧 Development Tools
 
-Feel free to submit issues and enhancement requests!
+- **Formatting**: `cargo fmt`
+- **Linting**: `cargo clippy`
+- **Testing**: `cargo test`
+- **Documentation**: `cargo doc --open`
+- **Security Audit**: `cargo audit` (requires cargo-audit)
+
+---
+
+Built with ❤️ using Rust and modern development practices.
