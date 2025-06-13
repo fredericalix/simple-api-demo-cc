@@ -1,0 +1,186 @@
+{
+  "nodes": [
+    {
+      "id": "1",
+      "type": "text",
+      "text": "# Simple API Demo\n## Architecture Overview\n\n\ud83e\udd80 **Rust-based REST API**\nProduction-ready modular architecture\nwith comprehensive testing",
+      "x": 20,
+      "y": 20,
+      "width": 300,
+      "height": 120,
+      "color": "6"
+    },
+    {
+      "id": "2",
+      "type": "text",
+      "text": "## \ud83d\ude80 main.rs\n**Entry Point**\n- Load configuration\n- Initialize logging\n- Start server manager\n- Handle top-level errors",
+      "x": 50,
+      "y": 180,
+      "width": 240,
+      "height": 100,
+      "color": "1"
+    },
+    {
+      "id": "3",
+      "type": "text",
+      "text": "## \u2699\ufe0f config.rs\n**Configuration Management**\n- Environment variables\n- Port validation\n- Default values\n- Custom error types",
+      "x": 350,
+      "y": 180,
+      "width": 240,
+      "height": 100,
+      "color": "2"
+    },
+    {
+      "id": "4",
+      "type": "text",
+      "text": "## \ud83d\udea8 error.rs\n**Error Handling**\n- Custom AppError enum\n- HTTP status mapping\n- Structured JSON responses\n- Timestamp inclusion",
+      "x": 650,
+      "y": 180,
+      "width": 240,
+      "height": 100,
+      "color": "3"
+    },
+    {
+      "id": "5",
+      "type": "text",
+      "text": "## \ud83d\udda5\ufe0f server.rs\n**Server Management**\n- Concurrent server startup\n- CORS configuration\n- Middleware setup\n- Health endpoints",
+      "x": 50,
+      "y": 320,
+      "width": 240,
+      "height": 100,
+      "color": "4"
+    },
+    {
+      "id": "6",
+      "type": "text",
+      "text": "## \ud83c\udf10 handlers.rs\n**HTTP Handlers**\n- main_server (text responses)\n- app_server (JSON API)\n- Health checks\n- Structured responses",
+      "x": 350,
+      "y": 320,
+      "width": 240,
+      "height": 100,
+      "color": "5"
+    },
+    {
+      "id": "7",
+      "type": "text",
+      "text": "## \ud83e\uddea Tests\n**Testing Strategy**\n- 14 Unit tests\n- 6 Integration tests\n- Environment isolation\n- HTTP endpoint validation",
+      "x": 650,
+      "y": 320,
+      "width": 240,
+      "height": 100,
+      "color": "6"
+    },
+    {
+      "id": "8",
+      "type": "text",
+      "text": "## \ud83d\udc33 Docker\n**Deployment**\n- Multi-stage build\n- Security best practices\n- Non-root user\n- Nginx reverse proxy",
+      "x": 50,
+      "y": 460,
+      "width": 240,
+      "height": 100,
+      "color": "1"
+    },
+    {
+      "id": "9",
+      "type": "text",
+      "text": "## \ud83d\udce1 Main Server\n**Port 8080**\n- Plain text responses\n- Health monitoring\n- Basic endpoints\n- Simple connectivity",
+      "x": 350,
+      "y": 460,
+      "width": 240,
+      "height": 100,
+      "color": "2"
+    },
+    {
+      "id": "10",
+      "type": "text",
+      "text": "## \ud83d\udd27 App Server\n**Port 4242**\n- JSON API responses\n- Structured metadata\n- CORS enabled\n- Timestamp inclusion",
+      "x": 650,
+      "y": 460,
+      "width": 240,
+      "height": 100,
+      "color": "3"
+    },
+    {
+      "id": "11",
+      "type": "text",
+      "text": "## \ud83d\udcca Quality Metrics\n- \u2705 All 20 tests passing\n- \u2705 No clippy warnings\n- \u2705 Comprehensive docs\n- \u2705 Modular architecture\n- \u2705 Production ready",
+      "x": 950,
+      "y": 180,
+      "width": 240,
+      "height": 120,
+      "color": "4"
+    },
+    {
+      "id": "12",
+      "type": "text",
+      "text": "## \ud83c\udfaf Best Practices\n- Single Responsibility\n- Proper error handling\n- English-only codebase\n- Comprehensive testing\n- Security-first design",
+      "x": 950,
+      "y": 320,
+      "width": 240,
+      "height": 120,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "2",
+      "toNode": "3",
+      "label": "loads config"
+    },
+    {
+      "id": "e2",
+      "fromNode": "2",
+      "toNode": "5",
+      "label": "creates servers"
+    },
+    {
+      "id": "e3",
+      "fromNode": "3",
+      "toNode": "4",
+      "label": "uses errors"
+    },
+    {
+      "id": "e4",
+      "fromNode": "5",
+      "toNode": "6",
+      "label": "registers handlers"
+    },
+    {
+      "id": "e5",
+      "fromNode": "5",
+      "toNode": "4",
+      "label": "error handling"
+    },
+    {
+      "id": "e6",
+      "fromNode": "6",
+      "toNode": "4",
+      "label": "returns errors"
+    },
+    {
+      "id": "e7",
+      "fromNode": "7",
+      "toNode": "6",
+      "label": "tests handlers"
+    },
+    {
+      "id": "e8",
+      "fromNode": "7",
+      "toNode": "3",
+      "label": "tests config"
+    },
+    {
+      "id": "e9",
+      "fromNode": "5",
+      "toNode": "9",
+      "label": "creates"
+    },
+    {
+      "id": "e10",
+      "fromNode": "5",
+      "toNode": "10",
+      "label": "creates"
+    }
+  ]
+}
