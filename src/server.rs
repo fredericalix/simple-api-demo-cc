@@ -93,6 +93,7 @@ impl ServerManager {
                         .route("/health", web::get().to(app_server::root)) // Health check endpoint
                         .route("/public", web::get().to(app_server::public_route))
                         .route("/private", web::get().to(app_server::private_route))
+                        .route("/rss", web::get().to(app_server::rss))
                 )
         })
         .bind((self.config.bind_address.as_str(), self.config.app_port))?
